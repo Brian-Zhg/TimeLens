@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "TimeLens",
+  "version": "1.0",
+  "description": "Extension to help you stay on task and keep track of what you're doing on your computer",
+  "action": {
+    "default_popup": "basic_toggle.html",
+    "default_icon": "tiktok.png"
+  },
+  "permissions": ["activeTab"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["background_switcher.js"]
+    }
+  ]
+}
