@@ -8,6 +8,32 @@
 <div id="newTxt"></div>
 <div id="countdown"></div>
 
+<div class="btn-group" role = "group" style="display:flex; flex-direction: column; width: 100%; align-items: center;">
+  <div class="slider-container" style="display: flex;">
+  <input type="range" min="0" max="90" value="50" class="slider" id ="minSlider">
+  
+  <div class="labels">
+    <span>0</span>
+    <span>15</span>
+    <span>30</span>
+    <span>45</span>
+    <span>60</span>
+    <span>75</span>
+    <span>90</span>
+  </div>
+  <div id = "slideText"></div>
+  </div>
+  <!-- forms -->
+<div style="flex-direction: column; margin-left: 5px; margin-top: 20px;">
+  <input class="form-control" type="number" min="0" placeholder="Hours" id="hours">
+  <input class="form-control" type="number" min="0" placeholder="Minutes" id="minutes">
+</div>
+<div style="margin: 5px;">
+    <button class="btn btn-secondary"style="border-radius: 50px; background-color:#3B82F6; color:#FFFFFF" id="start">Start</button>
+</div>
+</div>
+
+
 
 <button id ="current_time"> Stop Watch</button>
 <script src="basic_toggle.js"></script>
