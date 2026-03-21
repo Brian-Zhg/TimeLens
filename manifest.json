@@ -7,10 +7,10 @@
     "default_popup": "basic_toggle.html",
     "default_icon": "tiktok.png"
   },
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "tabs", "storage"],
   "web_accessible_resources": [
     {
-      "resources": ["basic_toggle.html", "basic_toggle.js"],
+      "resources": ["basic_toggle.html", "basic_toggle.js", "timer.html", "timer.js"],
       "matches": ["<all_urls>"]
     }],
   "content_scripts": [
