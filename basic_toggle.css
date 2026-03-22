@@ -31,7 +31,7 @@ html, h2{
 
 /* Add a background color on hover */
 .btn-group button:hover {
-  background-color: #04b7e8;
+  background-color: #26c4f0;
 }
 
 .btn-group button-selected{
@@ -95,3 +95,7 @@ html, h2{
   margin-left: 5px;
   left: 0;
 }   
+
+.no-select {
+  user-select: none;
+}

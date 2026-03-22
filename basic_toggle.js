@@ -10,13 +10,13 @@ src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
       if (data.time > 0) {
         console.log("time:" +time + "\n");
         time = data.time;
-        change();
+        change("timer", "timer");
       }
     })
   });
 
 var initialTs = Date.now();
-var sliderNum = 50, minutes = 0, hours = 0, time = 0;
+var sliderNum = 15, minutes = 0, hours = 0, time = 0;
 
 function startTime() {
   const today = new Date();
@@ -29,11 +29,8 @@ function startTime() {
   else p = "AM";
 
   const el = document.getElementById('txt');
-  if (!el) {
-    console.error("Element #txt not found");
-    return;
-  }
-
+  if (!el) return;
+  
   el.innerHTML = Math.abs(h - 12) + ":" + m + ":" + s + " " + p;
 
   setTimeout(startTime, 1000);
@@ -72,31 +69,9 @@ async function getTime() {
     time = sliderNum * 60;
   }
   chrome.storage.local.set({ "time": time });
-  change();
+  change("timer", "timer");
 }
 
-//changes to timer html
-async function change(){
-  const content = document.getElementById('content');
-
-  // Fetch the HTML of the other file
-  const response = await fetch(chrome.runtime.getURL('timer.html'));
-  const html = await response.text();
-
-  // Replace current popup content
-  content.innerHTML = html;
-
-  //deletes old scripts
-  const oldScript = document.getElementById("page-script");
-  if (oldScript) oldScript.remove();
-
-  //loads js file
-  const script = document.createElement("script");
-  script.src = chrome.runtime.getURL("timer.js");
-  script.type = "text/javascript";
-
-  document.body.appendChild(script);
-}
 // Slider number 
 var slider = document.getElementById("minSlider");
 var output = document.getElementById("slideText");
@@ -119,6 +94,31 @@ function preventNegative(e) {
 
 document.getElementById("hours").addEventListener("input", preventNegative);
 document.getElementById("minutes").addEventListener("input", preventNegative);
+
+async function change(htmlLink, js){
+  const content = document.getElementById('content');
+
+  // Fetch the HTML of the other file
+  const response = await fetch(chrome.runtime.getURL(htmlLink + '.html'));
+  const html = await response.text();
+
+  // Replace current popup content
+  content.innerHTML = html;
+
+  if(js){
+    //deletes old scrips
+  const oldScript = document.getElementById("page-script");
+  if (oldScript) oldScript.remove();
+
+  //loads js file
+  const script = document.createElement("script");
+  script.src = chrome.runtime.getURL(js +".js");
+  script.type = "text/javascript";
+
+  document.body.appendChild(script);
+  }
+  
+}
 
 function checkTime(i) {
   return i < 10 ? "0" + i : i;
