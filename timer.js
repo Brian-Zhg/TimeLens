@@ -78,13 +78,24 @@ function createPassword()
 
 function password()
 {
-    let entered = document.getElementById("gatekeeper");
     let passwordString = createPassword();
     console.log(passwordString);
+}
+
+document.getElementById("submitPassword").addEventListener("click", passCheck);
+
+function passCheck()
+{
+    let entered = document.getElementById("gatekeeper");
     let e = document.getElementById("password");
     if(!e) console.log("still cant find password");
     e.innerHTML = passwordString;
     if(entered.value == passwordString){
         reset();
     }
+    else 
+    {
+        document.getElementById("incorrect").style.display = 'block';
+    }
 }
+
