@@ -45,10 +45,8 @@ document.getElementById("current_time").addEventListener("click", function () { 
 function stopWatch(seconds) {
 
   const el = document.getElementById('newTxt');
-  if (!el) {
-    console.error("Element #txt not found");
-    return;
-  }
+  if (!el) return;
+
   el.innerHTML = seconds;
   setTimeout(stopWatch, 1000, seconds + 1);
 }
@@ -62,6 +60,11 @@ async function getTime() {
   let mTime = document.getElementById("minutes").value;
   if (mTime != null && mTime != "") minutes = mTime;
 
+  if((hTime != null && hTime != "") || (mTime != null && mTime != "") && hours == 0 && minutes == 0) {
+    let el = document.getElementById("incorrect");
+    el.style.display = 'block';
+    return; 
+  }
   if (hours > 0 || minutes > 0) {
     time = hours * 3600 + minutes * 60;
   }
@@ -82,6 +85,10 @@ async function change(){
 
   // Replace current popup content
   content.innerHTML = html;
+
+  //deletes old scripts
+  const oldScript = document.getElementById("page-script");
+  if (oldScript) oldScript.remove();
 
   //loads js file
   const script = document.createElement("script");
