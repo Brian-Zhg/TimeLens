@@ -7,7 +7,7 @@
     "default_popup": "basic_toggle.html",
     "default_icon": "tiktok.png"
   },
-  "permissions": ["activeTab", "tabs", "storage"],
+  "permissions": ["activeTab", "tabs", "storage", "background", "scripting"],
   "web_accessible_resources": [
     {
       "resources": ["basic_toggle.html", "basic_toggle.js", "timer.html", "timer.js"],
@@ -18,5 +18,9 @@
       "matches": ["<all_urls>"],
       "js": ["basic_toggle.js"]
     }
-  ]
+  ],
+  "background": {
+  "persistent": true
+  },
+  "host permission":["http://*/*", "https://*/*"]
 }

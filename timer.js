@@ -1,11 +1,14 @@
+
+
 chrome.storage.local.get(["time"], (data)=> {
     if(data.time > 0){
       time = data.time;
     }
   })
   timeRemain();
+  //hide();
 
-function timeRemain()
+async function timeRemain()
 {
     if(time < 0 ){
         alert("Timer Finished");
@@ -27,6 +30,20 @@ function timeRemain()
 
   time--;
   chrome.storage.local.set({"time": time});
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  //const url = new URL(tab.url);
+
+  // Get user’s blocked sites from storage
+  //const data = await chrome.storage.local.get("blockedSites");
+  //const blockedSites = data.blockedSites || []; // array of domains
+
+  // Check if current site is blocked
+  //if (blockedSites.some(site => url.hostname.includes(site))) {
+    // Inject overlay script dynamically
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["blocker.js"]
+    });
   setTimeout(timeRemain, 1000);
 }
 

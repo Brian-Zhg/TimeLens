@@ -3,6 +3,7 @@ Current issue: need to figure out how to get the timer to be remembered and not 
 after joining 2 or 3 times thinking maybe redo timer to have it based off of the world time 
 */
 
+
 src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
   document.addEventListener("DOMContentLoaded", () => {
     startTime();
@@ -69,6 +70,7 @@ async function getTime() {
     time = sliderNum * 60;
   }
   chrome.storage.local.set({ "time": time });
+  
   change("timer", "timer");
 }
 
