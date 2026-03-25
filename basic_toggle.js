@@ -6,7 +6,6 @@ after joining 2 or 3 times thinking maybe redo timer to have it based off of the
 
 src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
   document.addEventListener("DOMContentLoaded", () => {
-    startTime();
     chrome.storage.local.get(["time"], (data) => {
       if (data.time > 0) {
         console.log("time:" +time + "\n");
@@ -52,25 +51,25 @@ function stopWatch(seconds) {
 document.getElementById("start").addEventListener("click", function () { getTime(); });
 
 async function getTime() {
-  let hTime = document.getElementById("hours").value;
-  if (hTime != null && hTime != "") hours = hTime;
+  const hRaw = document.getElementById("hours").value.trim();
+  const mRaw = document.getElementById("minutes").value.trim();
 
-  let mTime = document.getElementById("minutes").value;
-  if (mTime != null && mTime != "") minutes = mTime;
+  // Parse to numbers, default to 0 if empty
+  hours  = hRaw !== "" ? parseInt(hRaw, 10) : 0;
+  minutes = mRaw !== "" ? parseInt(mRaw, 10) : 0;
 
-  if((hTime != null && hTime != "") || (mTime != null && mTime != "") && hours == 0 && minutes == 0) {
-    let el = document.getElementById("incorrect");
-    el.style.display = 'block';
-    return; 
+  if ((hRaw !== "" && isNaN(hours)) || (mRaw !== "" && isNaN(minutes))) {
+    document.getElementById("incorrect").style.display = "block";
+    return;
   }
+
   if (hours > 0 || minutes > 0) {
     time = hours * 3600 + minutes * 60;
-  }
-  else {
+  } else {
     time = sliderNum * 60;
   }
+
   chrome.storage.local.set({ "time": time });
-  
   change("timer", "timer");
 }
 
@@ -90,7 +89,7 @@ function preventNegative(e) {
 
   // Remove anything that's not a digit
   value = value.replace(/[^0-9]/g, "");
-
+  
   e.target.value = value;
 }
 
@@ -119,8 +118,8 @@ async function change(htmlLink, js){
 
   document.body.appendChild(script);
   }
-  
 }
+document.getElementById("add").addEventListener("click", function () {change("blocked", "blocked")});
 
 function checkTime(i) {
   return i < 10 ? "0" + i : i;

@@ -99,3 +99,9 @@ html, h2{
 .no-select {
   user-select: none;
 }
+
+#listContainer {
+  max-height: 200px;   /* adjust as needed */
+  overflow-y: auto;    /* enables vertical scrolling */
+  border: 1px solid #ccc; /* optional */
+}
