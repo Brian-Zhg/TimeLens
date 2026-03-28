@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<head><link rel="stylesheet" href="basic_toggle.css"></head>
+<meta charset="UTF-8">
+
+<head>
+    <link rel="stylesheet" href="basic_toggle.css">
+</head>
 <html style="width: 400px; height: 300px;">
+
 <body>
-<div style="margin-top: 30px;">
-<input type="text" id="websiteInput" placeholder="Enter a domain">
-<button id = "addWebsite">Add</button>
-<u style="color: red; cursor:pointer; " id ="clear">Clear All</u>
-</div>
-<h style="display: none; color:red;" id ="included">Already Included</h>
-<h style="display: none; color:red;" id ="invalid">Invalid Domain</h>
-<div id="listContainer" style="
+    <div style="margin-top: 30px;">
+        <span id="backButton" style="cursor:pointer; font-size:30px; display: inline-block;">←</span>
+        <input type="text" id="websiteInput" placeholder="Enter a domain">
+        <button id="addWebsite">Add</button>
+        <u style="color: red; cursor:pointer; " id="clear">Clear All</u>
+    </div>
+    <h style="display: none; color:red;" id="included">Already Included</h>
+    <h style="display: none; color:red;" id="invalid">Invalid Domain</h>
+    <div id="listContainer" style="
     display: flex;
     flex-direction: column;  /* stack items vertically */
     align-items: flex-start; /* hug the left wall */
+     width: 375px;   /* fixed width */
+    height: 500px;  /* fixed height */
 ">
-</div>
+    </div>
 </body>
+
 </html>

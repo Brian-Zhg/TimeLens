@@ -38,6 +38,7 @@ input.addEventListener("keypress", function(event) {
 
 submitOnEnter("gatekeeper");
 
+//checks password
 function passCheck()
 {
     let entered = document.getElementById("gatekeeper");
