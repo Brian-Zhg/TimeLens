@@ -7,7 +7,13 @@
 <button id = "addWebsite">Add</button>
 <u style="color: red; cursor:pointer; " id ="clear">Clear All</u>
 </div>
-<div id="listContainer" style="align-items: center; vertical-align: middle;">
+<h style="display: none; color:red;" id ="included">Already Included</h>
+<h style="display: none; color:red;" id ="invalid">Invalid Domain</h>
+<div id="listContainer" style="
+    display: flex;
+    flex-direction: column;  /* stack items vertically */
+    align-items: flex-start; /* hug the left wall */
+">
 </div>
 </body>
 </html>

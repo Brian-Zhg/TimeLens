@@ -36,17 +36,7 @@ function startTime() {
   setTimeout(startTime, 1000);
 }
 
-//utilizes stopWatch function after click on current_time 
-document.getElementById("current_time").addEventListener("click", function () { stopWatch(0) });
 
-function stopWatch(seconds) {
-
-  const el = document.getElementById('newTxt');
-  if (!el) return;
-
-  el.innerHTML = seconds;
-  setTimeout(stopWatch, 1000, seconds + 1);
-}
 
 document.getElementById("start").addEventListener("click", function () { getTime(); });
 
