@@ -25,6 +25,7 @@ async function timeRemain() {
   if (h > 0) tString += (h + " Hours ");
   if (m > 0) tString += (m + " Minutes ");
   tString += (s + " Seconds");
+  chrome.storage.local.set({"leftOnTimer": tString});
   e.innerHTML = tString;
 
   time = Date.now();
