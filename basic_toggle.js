@@ -6,35 +6,16 @@ after joining 2 or 3 times thinking maybe redo timer to have it based off of the
 
 src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
   document.addEventListener("DOMContentLoaded", () => {
-    chrome.storage.local.get(["time"], (data) => {
-      if (data.time > 0) {
-        console.log("time:" +time + "\n");
-        time = data.time;
+    chrome.storage.local.get(["endTime"], (data) => {
+      if(data.endTime > Date.now()){
+        time = Date.now();
         change("timer", "timer");
       }
     })
   });
 
 var initialTs = Date.now();
-var sliderNum = 15, minutes = 0, hours = 0, time = 0;
-
-function startTime() {
-  const today = new Date();
-  let h = today.getHours();
-  let m = checkTime(today.getMinutes());
-  let s = checkTime(today.getSeconds());
-  //part of the day pm vs am 
-  let p;
-  if (h > 12) p = "PM";
-  else p = "AM";
-
-  const el = document.getElementById('txt');
-  if (!el) return;
-  
-  el.innerHTML = Math.abs(h - 12) + ":" + m + ":" + s + " " + p;
-
-  setTimeout(startTime, 1000);
-}
+var sliderNum = 15, minutes = 0, hours = 0, time = 0, endTime;
 
 
 
@@ -54,12 +35,15 @@ async function getTime() {
   }
 
   if (hours > 0 || minutes > 0) {
-    time = hours * 3600 + minutes * 60;
+    time = hours * 3600000 + minutes * 60000;
   } else {
-    time = sliderNum * 60;
+    time = sliderNum * 60000;
   }
 
-  chrome.storage.local.set({ "time": time });
+  let endTime = parseInt(Date.now())+parseInt(time);
+
+  chrome.storage.local.set({ "time": Date.now() });
+  chrome.storage.local.set({ "endTime": endTime});
   change("timer", "timer");
 }
 
@@ -113,4 +97,23 @@ document.getElementById("add").addEventListener("click", function () {change("bl
 
 function checkTime(i) {
   return i < 10 ? "0" + i : i;
+}
+
+
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = checkTime(today.getMinutes());
+  let s = checkTime(today.getSeconds());
+  //part of the day pm vs am 
+  let p;
+  if (h > 12) p = "PM";
+  else p = "AM";
+
+  const el = document.getElementById('txt');
+  if (!el) return;
+  
+  el.innerHTML = Math.abs(h - 12) + ":" + m + ":" + s + " " + p;
+
+  setTimeout(startTime, 1000);
 }

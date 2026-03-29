@@ -1,7 +1,7 @@
 
 function showOverlay() {
   if (document.getElementById("overlayContainer")) return;
-
+  // mutePage();
   const div = document.createElement("div");
   div.id = "overlayContainer";
   document.body.style.overflow = 'hidden';
@@ -19,12 +19,24 @@ function showOverlay() {
       flex-direction: column;
       background-color: #FFFFFF;
     ">
-      <img src="hourglass.gif" alt="hourglass pic" style="width:200px;height:200px; align-items:center;" >
+      <img id = "hourglass" src = "https://media1.tenor.com/m/i-g83DQHe_wAAAAC/scout-tf2.gif" style="width:200px;height:200px; align-items:center;" >
       <div id="timeRemain"></div>
+      
     </div>
   `;
+ 
   document.body.appendChild(div);
+}
+
+function mutePage() {
+  document.querySelectorAll("video, audio").forEach((elem) => muteMe(elem));
+}
+
+function muteMe(elem) {
+  elem.muted = true;
+  elem.pause();
 }
 
 // Run immediately
 showOverlay();
+mutePage();
