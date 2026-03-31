@@ -14,12 +14,11 @@ src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
     })
   });
 
+document.getElementById("start").addEventListener("click", function () { getTime(); });
+
 var initialTs = Date.now();
 var sliderNum = 15, minutes = 0, hours = 0, time = 0, endTime;
 
-
-
-document.getElementById("start").addEventListener("click", function () { getTime(); });
 
 async function getTime() {
   const hRaw = document.getElementById("hours").value.trim();
@@ -93,6 +92,7 @@ async function change(htmlLink, js){
   document.body.appendChild(script);
   }
 }
+
 document.getElementById("add").addEventListener("click", function () {change("blocked", "blocked")});
 
 function checkTime(i) {

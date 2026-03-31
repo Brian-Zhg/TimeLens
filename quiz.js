@@ -15,7 +15,6 @@ function createPassword(passLength)
 function password()
 {
     passwordString = createPassword(10);
-    console.log("I think this is the password" + passwordString);
     let e = document.getElementById("password");
     e.innerHTML = passwordString;
 }

@@ -105,3 +105,10 @@ html, h2{
   overflow-y: auto;    /* enables vertical scrolling */
   border: 1px solid #ccc; /* optional */
 }
+
+@font-face {
+    font-family: 'BodoniPoster';
+    src: url('fonts/BodoniPoster.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

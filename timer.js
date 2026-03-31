@@ -1,4 +1,6 @@
 
+var time; 
+var endTime;
 chrome.storage.local.get(["endTime"], (data) => {
   if (data.endTime > Date.now()) {
     endTime = data.endTime;
@@ -27,35 +29,15 @@ async function timeRemain() {
   tString += (s + " Seconds");
   chrome.storage.local.set({"leftOnTimer": tString});
   e.innerHTML = tString;
-
-  time = Date.now();
-  chrome.storage.local.set({ "time": time });
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const url = new URL(tab.url);
-
-  // Get user’s blocked sites from storage
-  const data = await chrome.storage.local.get("listOfSites");
-  const blockedSites = data.listOfSites || []; // array of domains
-
-  // Check if current site is blocked
-  if (blockedSites.some(site => url.hostname.includes(site))) {
-    // Inject overlay script dynamically
-    if (time < endTime) {
-      chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ["blocker.js"]
-      });
-    }
-  }
-
-  setTimeout(timeRemain, 1000);
 }
 
 function reset() {
-  time = 0;
-  chrome.storage.local.set({ "time": time });
+  chrome.storage.local.set({ "endTime": Date.now() });
   change("basic_toggle", "basic_toggle");
 }
 
-document.getElementById("endTimer").addEventListener("click", async function () { await change("quiz", "quiz"); });
+
+var endingTimer = document.getElementById("endTimer");
+if(endingTimer) endingTimer.addEventListener("click", async function () { await change("quiz", "quiz"); });
+
 

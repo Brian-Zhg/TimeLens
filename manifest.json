@@ -7,19 +7,38 @@
     "default_popup": "basic_toggle.html",
     "default_icon": "tiktok.png"
   },
-  "permissions": ["activeTab", "tabs", "storage", "background", "scripting", "alarms"],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "scripting",
+    "alarms"
+  ],
   "web_accessible_resources": [
     {
-      "resources": ["basic_toggle.html", "basic_toggle.js", "timer.html", "timer.js"],
-      "matches": ["<all_urls>"]
-    }],
+      "resources": [
+        "basic_toggle.html",
+        "basic_toggle.js",
+        "timer.html",
+        "timer.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["basic_toggle.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "timer.js"
+      ]
     }
   ],
   "background": {
-  "persistent": false
-  }
+    "service_worker": "background.js"
+  },
+  "host_permissions": ["<all_urls>"]
 }

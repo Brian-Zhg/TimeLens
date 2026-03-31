@@ -1,12 +1,13 @@
 
 function showOverlay() {
   if (document.getElementById("overlayContainer")) return;
-  // mutePage();
+  window.__blockerRunning = true;
   const div = document.createElement("div");
   div.id = "overlayContainer";
 
   div.innerHTML = `
     <div id="overlay" style="
+      font-family: 'BodoniPoster', serif;
       position: fixed;
       top: 0;
       left: 0;
@@ -27,24 +28,65 @@ function showOverlay() {
   document.body.appendChild(div);
 }
 
-function mutePage() {
-  document.querySelectorAll("video, audio").forEach((elem) => muteMe(elem));
+function mutePage(what) {
+  if (what == "mute") {
+    document.querySelectorAll("video, audio").forEach((elem) => mute(elem));
+  }
+  else {
+    document.querySelectorAll("video, audio").forEach((elem) => unmute(elem));
+  }
+
 }
 
-function muteMe(elem) {
+function mute(elem) {
   document.body.style.overflow = 'hidden';
   elem.muted = true;
   elem.pause();
 }
 
+function unmute(elem) {
+  document.body.style.overflow = 'visible';
+  elem.muted = false;
+}
+
 function checkTime() {
-  let change = document.getElementById("belowPic");
-  chrome.storage.local.get(["leftOnTimer"], (data) => {
-    change.innerHTML = data.leftOnTimer;
+  chrome.storage.local.get(["endTime"], (data) => {
+    let change = document.getElementById("belowPic");
+    let timeRN = Date.now();
+    let d = Math.floor((data.endTime - timeRN) / (86400000));
+    let h = Math.floor(((data.endTime - timeRN) % 86400000) / 3600000);
+    let m = Math.floor(((data.endTime - timeRN) % 3600000) / 60000);
+    let s = Math.floor(((data.endTime - timeRN) % 60000) / 1000);
+    let tString = " ";
+    if (d > 0) tString += (d + " Days ");
+    if (h > 0) tString += (h + " Hours ");
+    if (m > 0) tString += (m + " Minutes ");
+    tString += (s + " Seconds");
+    change.innerHTML = tString;
   });
 }
 
-// Run immediately
-showOverlay();
-mutePage();
-checkTime();
+
+function hideOverlay() {
+  var element = document.getElementById("overlayContainer");
+  element.parentNode.removeChild(element);
+}
+
+// blocker.js
+const myInterval = setInterval(() => {
+  if (!chrome.runtime?.id) {
+    clearInterval(myInterval);
+    return;
+  }
+  chrome.storage.local.get(["endTime"], (data) => {
+    if (Date.now() < data.endTime) {
+      showOverlay();
+      mutePage("mute");
+      checkTime();
+    } else {
+      hideOverlay();
+      mutePage();
+    }
+  });
+}, 1000);
+
