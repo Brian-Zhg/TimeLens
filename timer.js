@@ -4,7 +4,6 @@ var endTime;
 chrome.storage.local.get(["endTime"], (data) => {
   if (data.endTime > Date.now()) {
     endTime = data.endTime;
-    time = Date.now();
   }
   timeRemain();
 })
@@ -15,6 +14,7 @@ async function timeRemain() {
     change("basic_toggle", "basic_toggle");
     return;
   }
+  time = Date.now();
   
   let e = document.getElementById('timeRemain');
   if (!e) return;
@@ -29,6 +29,7 @@ async function timeRemain() {
   tString += (s + " Seconds");
   chrome.storage.local.set({"leftOnTimer": tString});
   e.innerHTML = tString;
+  setTimeout(timeRemain, 1000);
 }
 
 function reset() {

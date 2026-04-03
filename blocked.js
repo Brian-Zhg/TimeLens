@@ -58,10 +58,26 @@ function addItem() {
 
 //just a helper function to add a checkbox next to the list values
 function addCheckBox(parent, checked) {
+    console.log(blockedSites);
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = checked;
     parent.appendChild(checkbox);
+    checkbox.onclick = function () {
+        let value = this.parentElement.id;
+        if (!this.checked) {
+            console.log("clicked");
+            const blockedIndex = blockedSites.indexOf(value);
+            if (blockedIndex > -1) { // only splice array when item is found
+                blockedSites.splice(blockedIndex, 1);
+                chrome.storage.local.set({ "blockedSites": blockedSites });
+            }
+        }
+        else {
+            blockedSites.push(value);
+            chrome.storage.local.set({ "blockedSites": blockedSites });
+        }
+    }
 }
 
 //same thing but for delete button
@@ -83,7 +99,7 @@ function addDelButton(parent) {
         const blockedIndex = blockedSites.indexOf(value);
         if (blockedIndex > -1) { // only splice array when item is found
             blockedSites.splice(listIndex, 1); 
-            chrome.storage.local.set({"blockedsites" : blockedSites});
+            chrome.storage.local.set({"blockedSites" : blockedSites});
         }
     }
 }
@@ -94,8 +110,8 @@ document.getElementById("clear").addEventListener("click", function () { clearLi
 function clearList() {
     let conformation = confirm("Are you sure you want to clear the list ? ");
     if (conformation) {
-        listOfSites = [];
         chrome.storage.local.set({ "listOfSites": [] });
+        chrome.storage.local.set({ "blockedSites": [] });
         document.getElementById("included").style.display = 'none';
         document.getElementById("invalid").style.display = 'none';
         displayList();

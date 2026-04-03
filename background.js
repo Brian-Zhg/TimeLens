@@ -1,5 +1,3 @@
-console.log("background running");
-
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create("myAlarm", { periodInMinutes: 0.1 });
 });
@@ -57,7 +55,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   let hostname;
   try {
     hostname = new URL(tab.url).hostname;
-    console.log(hostname);
   } catch {
     return;
   }
@@ -69,7 +66,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (Date.now() > endTime) return;
 
     if (blockedSites.some(site => hostname.includes(site))) {
-      console.log("how does it go in ? ");
       chrome.scripting.executeScript({
         target: { tabId: tabId }, // use tabId directly, not tab.id
         files: ["blocker.js"]
