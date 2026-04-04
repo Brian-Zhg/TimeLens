@@ -20,12 +20,22 @@ function showOverlay() {
       flex-direction: column;
       background-color: #FFFFFF;
     ">
-    <img id = "hourglass" src = "https://media.tenor.com/j1U9chTe2_0AAAAi/nope-finger-wag.gif" style="width:400px;height:400px; align-items:center;" >
-    <div style ="font-size:30px; margin-bottom:200px" id="belowPic"></div>
+    <img id = "hourglass"  style="width:400px;height:400px; align-items:center;" >
+    <div style ="font-size:30px; margin-top:20px" id="belowPic"></div>
     </div>
   `;
 
   document.body.appendChild(div);
+  randomImage();
+}
+
+function randomImage() {
+  let images = ["https://media.tenor.com/OaGe6QGDbLIAAAAM/asian-baby-finger.gif", "https://media.tenor.com/divc98ce49MAAAAM/nono-nuh-uh.gif",
+    "https://media.tenor.com/gfR97oQJltoAAAAM/you-know-better-shame.gif", "https://media.tenor.com/8K-11cIclxkAAAAm/unt-unt-yellow-emoji.webp",
+    "https://media.tenor.com/Qc4n4QN0DAUAAAAM/shaking-finger-no-no.gif", "https://media.tenor.com/bn1buOTlXD4AAAAM/mo-finger-wag.gif", 
+    "https://media.tenor.com/jmgxANJ6FocAAAAM/ngmibp-ngmi-meme.gif", "https://media1.tenor.com/m/lctqQaixfs4AAAAd/no-nope.gif"];
+  const icon = document.getElementById("hourglass");
+  icon.src = images[Math.floor(Math.random() * images.length)];
 }
 
 function mutePage(what) {

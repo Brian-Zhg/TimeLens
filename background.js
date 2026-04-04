@@ -30,6 +30,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
           continue;
         }
 
+
         // Only inject if hostname matches a blocked site
         if (blockedSites.some(site => hostname.includes(site))) {
           chrome.scripting.executeScript({
@@ -42,19 +43,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   });
 });
 
-
-
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status !== "complete" || !tab.url) return;
 
   // Skip restricted pages
   if (tab.url.startsWith("chrome://") ||
-      tab.url.startsWith("edge://") ||
-      tab.url.startsWith("about:")) return;
+    tab.url.startsWith("edge://") ||
+    tab.url.startsWith("about:")) return;
 
   let hostname;
   try {
-    hostname = new URL(tab.url).hostname;
+    hostname = new URL(tab.url).hostname; // safely parse
   } catch {
     return;
   }
@@ -65,7 +64,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     if (Date.now() > endTime) return;
 
-    if (blockedSites.some(site => hostname.includes(site))) {
+    if (blockedSites.some(site => hostname.includes(site))){
       chrome.scripting.executeScript({
         target: { tabId: tabId }, // use tabId directly, not tab.id
         files: ["blocker.js"]
