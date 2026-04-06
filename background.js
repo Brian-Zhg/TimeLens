@@ -6,13 +6,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name !== "myAlarm") return;
 
   // Load blocked sites + time window from storage
-  chrome.storage.local.get(["blockedSites", "endTime"], (data) => {
+  chrome.storage.local.get(["blockedSites", "endTime", "focus"], (data) => {
     const blockedSites = data.blockedSites || [];
-    const now = Date.now();
     const endTime = data.endTime || 0;
+    const focus = data.focus;
 
-    // Only proceed if we're within the blocked time window
-    if (now > endTime) return;
+    if(!focus) {if ( Date.now() >= endTime) return;}
 
     chrome.tabs.query({}, (tabs) => {
       for (let tab of tabs) {
@@ -58,17 +57,23 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     return;
   }
 
-  chrome.storage.local.get(["blockedSites", "endTime"], (data) => {
+  chrome.storage.local.get(["blockedSites", "endTime", "focus"], (data) => {
     const blockedSites = (data.blockedSites || []).filter(site => site && site.trim() !== "");
     const endTime = data.endTime || 0;
+    const focus = data.focus;
 
-    if (Date.now() > endTime) return;
+    if(!focus) {if ( Date.now() >= endTime) return;}
+    
+    
 
-    if (blockedSites.some(site => hostname.includes(site))){
+    if (blockedSites.some(site => hostname.includes(site))) {
       chrome.scripting.executeScript({
         target: { tabId: tabId }, // use tabId directly, not tab.id
         files: ["blocker.js"]
       });
     }
+
   });
 });
+
+chrome.storage.local.get(["focus", "blockedSites", "endTime"], console.log)

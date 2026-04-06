@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<head><link rel="stylesheet" href="basic_toggle.css"></head>
 <html>
+<head>
+  <link rel="stylesheet" href="basic_toggle.css">
+</head>
+<body>
 <body>
 <div id="content">
-<h2>JavaScript Clock</h2>
 <div id="txt"></div>
 <div id="newTxt"></div>
 <div id="countdown"></div>
-
-<div class="btn-group" role = "group" style="display:flex; flex-direction: column; width: 100%; align-items: center;">
+<div  class="btn-group" role = "group" style="display:flex; flex-direction: column; width: 100%; align-items: center;"> 
   <div class="slider-container" style="margin-top: 20px; display: flex;">
   <input type="range" min="0" max="90" value="15" class="slider" id ="minSlider">
-  
   <div class="labels">
     <span>0</span>
     <span>15</span>
@@ -23,7 +23,7 @@
   </div>
   <div id = "slideText"></div>
   </div>
-  <h4 style="margin-top: 40px;">Manual Input</h4>
+  <h4 style="margin-top: 20px;">Manual Input</h4>
   <!-- forms -->
 <div style="flex-direction: column; margin-left: 5px;">
   <input class="form-control" type="number" min="0" placeholder="Hours" id="hours">
@@ -34,6 +34,7 @@
     <button class="btn btn-secondary"style="width:40%; border-radius: 50px; background-color:#4BBA41; color:#FFFFFF" id="start">Start</button>
     <button class="btn btn-secondary"style="width:40%; border-radius: 50px; background-color:#26c4f0; color:#FFFFFF" id="add">Add Websites</button>
 </div>
+<button class="bigRedButton" id="focusMode"><span>Focus Mode</span></button>
 </div>
 </div>
 <script src="basic_toggle.js"></script>

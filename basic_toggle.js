@@ -6,8 +6,11 @@ after joining 2 or 3 times thinking maybe redo timer to have it based off of the
 
 src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" >
   document.addEventListener("DOMContentLoaded", () => {
-    chrome.storage.local.get(["endTime"], (data) => {
-      if(data.endTime > Date.now()){
+    chrome.storage.local.get(["endTime", "focus"], (data) => {
+      if (data.focus == true) {
+        change("lockedIn", "lockedIn")
+      }
+      if (data.endTime > Date.now()) {
         time = Date.now();
         change("timer", "timer");
       }
@@ -25,7 +28,7 @@ async function getTime() {
   const mRaw = document.getElementById("minutes").value.trim();
 
   // Parse to numbers, default to 0 if empty
-  hours  = hRaw !== "" ? parseInt(hRaw, 10) : 0;
+  hours = hRaw !== "" ? parseInt(hRaw, 10) : 0;
   minutes = mRaw !== "" ? parseInt(mRaw, 10) : 0;
 
   if ((hRaw !== "" && isNaN(hours)) || (mRaw !== "" && isNaN(minutes))) {
@@ -39,10 +42,10 @@ async function getTime() {
     time = sliderNum * 60000;
   }
 
-  let endTime = parseInt(Date.now())+parseInt(time);
+  let endTime = parseInt(Date.now()) + parseInt(time);
 
   chrome.storage.local.set({ "time": Date.now() });
-  chrome.storage.local.set({ "endTime": endTime});
+  chrome.storage.local.set({ "endTime": endTime });
   change("timer", "timer");
 }
 
@@ -62,14 +65,14 @@ function preventNegative(e) {
 
   // Remove anything that's not a digit
   value = value.replace(/[^0-9]/g, "");
-  
+
   e.target.value = value;
 }
 
 document.getElementById("hours").addEventListener("input", preventNegative);
 document.getElementById("minutes").addEventListener("input", preventNegative);
 
-async function change(htmlLink, js){
+async function change(htmlLink, js) {
   const content = document.getElementById('content');
 
   // Fetch the HTML of the other file
@@ -79,21 +82,21 @@ async function change(htmlLink, js){
   // Replace current popup content
   content.innerHTML = html;
 
-  if(js){
+  if (js) {
     //deletes old scrips
-  const oldScript = document.getElementById("page-script");
-  if (oldScript) oldScript.remove();
+    const oldScript = document.getElementById("page-script");
+    if (oldScript) oldScript.remove();
 
-  //loads js file
-  const script = document.createElement("script");
-  script.src = chrome.runtime.getURL(js +".js");
-  script.type = "text/javascript";
+    //loads js file
+    const script = document.createElement("script");
+    script.src = chrome.runtime.getURL(js + ".js");
+    script.type = "text/javascript";
 
-  document.body.appendChild(script);
+    document.body.appendChild(script);
   }
 }
 
-document.getElementById("add").addEventListener("click", function () {change("blocked", "blocked")});
+document.getElementById("add").addEventListener("click", function () { change("blocked", "blocked") });
 
 function checkTime(i) {
   return i < 10 ? "0" + i : i;
@@ -112,8 +115,16 @@ function startTime() {
 
   const el = document.getElementById('txt');
   if (!el) return;
-  
+
   el.innerHTML = Math.abs(h - 12) + ":" + m + ":" + s + " " + p;
 
   setTimeout(startTime, 1000);
+}
+
+document.getElementById("focusMode").addEventListener("click", function () { focus() });
+
+function focus() {
+  console.log("focus: true \n");
+  chrome.storage.local.set({ "focus": true });
+  change("lockedIn", "lockedIn");
 }
