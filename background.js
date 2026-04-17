@@ -11,7 +11,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     const endTime = data.endTime || 0;
     const focus = data.focus;
 
-    if(!focus) {if ( Date.now() >= endTime) return;}
+
+    if (!focus) { if (Date.now() >= endTime) return; }
 
     chrome.tabs.query({}, (tabs) => {
       for (let tab of tabs) {
@@ -21,17 +22,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         if (tab.url.startsWith("chrome://") ||
           tab.url.startsWith("edge://") ||
           tab.url.startsWith("about:")) continue;
-
-        let hostname;
+        let name;
         try {
-          hostname = new URL(tab.url).hostname; // safely parse
+          const hostname = new URL(tab.url).hostname;
+          name = hostname.split('.').slice(-2)[0];
         } catch {
           continue;
         }
 
 
         // Only inject if hostname matches a blocked site
-        if (blockedSites.some(site => hostname.includes(site))) {
+        if (blockedSites.some(site => name === site)) {
           chrome.scripting.executeScript({
             target: { tabId: tab.id },
             files: ["blocker.js"]
@@ -42,6 +43,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   });
 });
 
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status !== "complete" || !tab.url) return;
 
@@ -49,10 +51,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (tab.url.startsWith("chrome://") ||
     tab.url.startsWith("edge://") ||
     tab.url.startsWith("about:")) return;
-
-  let hostname;
+  let name;
   try {
-    hostname = new URL(tab.url).hostname; // safely parse
+    const hostname = new URL(tab.url).hostname;
+    name = hostname.split('.').slice(-2)[0];
   } catch {
     return;
   }
@@ -62,11 +64,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const endTime = data.endTime || 0;
     const focus = data.focus;
 
-    if(!focus) {if ( Date.now() >= endTime) return;}
-    
-    
+    if (!focus) { if (Date.now() >= endTime) return; }
 
-    if (blockedSites.some(site => hostname.includes(site))) {
+    if (blockedSites.some(site => name === site)) {
       chrome.scripting.executeScript({
         target: { tabId: tabId }, // use tabId directly, not tab.id
         files: ["blocker.js"]
@@ -75,5 +75,3 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
   });
 });
-
-chrome.storage.local.get(["focus", "blockedSites", "endTime"], console.log)

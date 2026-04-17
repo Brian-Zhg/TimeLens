@@ -23,7 +23,6 @@ async function displayList() {
         li.style.display = "flex";
         li.style.alignItems = "center";
         li.setAttribute('id', listOfSites[i]);
-        addCheckBox(li, blockedSites.includes(listOfSites[i]));
         li.appendChild(document.createTextNode(listOfSites[i]));
         addDelButton(li);
         a.appendChild(li);
@@ -57,28 +56,28 @@ function addItem() {
 
 
 //just a helper function to add a checkbox next to the list values
-function addCheckBox(parent, checked) {
-    console.log(blockedSites);
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = checked;
-    parent.appendChild(checkbox);
-    checkbox.onclick = function () {
-        let value = this.parentElement.id;
-        if (!this.checked) {
-            console.log("clicked");
-            const blockedIndex = blockedSites.indexOf(value);
-            if (blockedIndex > -1) { // only splice array when item is found
-                blockedSites.splice(blockedIndex, 1);
-                chrome.storage.local.set({ "blockedSites": blockedSites });
-            }
-        }
-        else {
-            blockedSites.push(value);
-            chrome.storage.local.set({ "blockedSites": blockedSites });
-        }
-    }
-}
+// function addCheckBox(parent, checked) {
+//     console.log(blockedSites);
+//     const checkbox = document.createElement("input");
+//     checkbox.type = "checkbox";
+//     checkbox.checked = checked;
+//     parent.appendChild(checkbox);
+//     checkbox.onclick = function () {
+//         let value = this.parentElement.id;
+//         if (!this.checked) {
+//             console.log("clicked");
+//             const blockedIndex = blockedSites.indexOf(value);
+//             if (blockedIndex > -1) { // only splice array when item is found
+//                 blockedSites.splice(blockedIndex, 1);
+//                 chrome.storage.local.set({ "blockedSites": blockedSites });
+//             }
+//         }
+//         else {
+//             blockedSites.push(value);
+//             chrome.storage.local.set({ "blockedSites": blockedSites });
+//         }
+//     }
+// }
 
 //same thing but for delete button
 function addDelButton(parent) {
@@ -94,12 +93,12 @@ function addDelButton(parent) {
         const listIndex = listOfSites.indexOf(value);
         if (listIndex > -1) { // only splice array when item is found
             listOfSites.splice(listIndex, 1); // 2nd parameter means remove one item only
-            chrome.storage.local.set({"listOfSites" : listOfSites});
+            chrome.storage.local.set({ "listOfSites": listOfSites });
         }
         const blockedIndex = blockedSites.indexOf(value);
         if (blockedIndex > -1) { // only splice array when item is found
-            blockedSites.splice(listIndex, 1); 
-            chrome.storage.local.set({"blockedSites" : blockedSites});
+            blockedSites.splice(listIndex, 1);
+            chrome.storage.local.set({ "blockedSites": blockedSites });
         }
     }
 }
@@ -110,11 +109,13 @@ document.getElementById("clear").addEventListener("click", function () { clearLi
 function clearList() {
     let conformation = confirm("Are you sure you want to clear the list ? ");
     if (conformation) {
-        chrome.storage.local.set({ "listOfSites": [] });
-        chrome.storage.local.set({ "blockedSites": [] });
-        document.getElementById("included").style.display = 'none';
-        document.getElementById("invalid").style.display = 'none';
-        displayList();
+        chrome.storage.local.set({ "listOfSites": [], "blockedSites": [] }, () => {
+            listOfSites = [];
+            blockedSites = [];
+            document.getElementById("included").style.display = 'none';
+            document.getElementById("invalid").style.display = 'none';
+            displayList();
+        });
     }
 }
 
@@ -132,27 +133,25 @@ function filterList(e) {
             li.style.fontSize = "15px";
             li.style.marginTop = "5px";
             li.setAttribute('id', listOfSites[i]);
-            addCheckBox(li, blockedSites.includes(listOfSites[i]));
             li.appendChild(document.createTextNode(listOfSites[i]));
             a.appendChild(li);
         }
     }
 }
 
-document.getElementById("backButton").addEventListener("click", function(){ change("basic_toggle", "basic_toggle") });
+document.getElementById("backButton").addEventListener("click", function () { change("basic_toggle", "basic_toggle") });
 
 document.getElementById("addWebsite").addEventListener("click", function () { addItem() });
-function submitOnEnter(button)
-{
-var input = document.getElementById(button);
-// Execute a function when the user presses a key on the keyboard
-input.addEventListener("keypress", function(event) {
-  // If the user presses the "Enter" key on the keyboard
-  if (event.key === "Enter") {
-    // Trigger the button element with a click
-    document.getElementById("addWebsite").click();
-  }
-});
+function submitOnEnter(button) {
+    var input = document.getElementById(button);
+    // Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function (event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Trigger the button element with a click
+            document.getElementById("addWebsite").click();
+        }
+    });
 }
 
 submitOnEnter("websiteInput");

@@ -13,9 +13,7 @@ function randomLocked() {
 
 function unfocus()
 {
-    console.log("focus: false \n");
-    chrome.storage.local.set({"focus": false});
-    change("basic_toggle", "basic_toggle");
+  change("quiz", "quiz");
 }
 
 document.getElementById("unfocus").addEventListener("click", function() {unfocus()});

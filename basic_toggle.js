@@ -128,3 +128,17 @@ function focus() {
   chrome.storage.local.set({ "focus": true });
   change("lockedIn", "lockedIn");
 }
+
+const toggle = document.querySelector('.toggle');
+
+toggle.addEventListener('click', () => {
+  toggle.classList.toggle('on');
+  if(toggle.classList.contains('on')){
+    document.getElementById('manual').style.display = 'block';
+    document.getElementById('sliderGroup').style.display = 'none';
+  }
+  if(!toggle.classList.contains('on')){
+    document.getElementById('manual').style.display = 'none';
+    document.getElementById('sliderGroup').style.display = 'block';
+  }
+});

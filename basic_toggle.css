@@ -141,3 +141,34 @@ html, h2{
   box-shadow: 0 4px 0 rgb(183,0,0),
     0 8px 6px rgba(0,0,0,.45);
 }
+
+.toggle {
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      position: relative;
+      border-radius: 34px;
+      background-color: #ccd;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .toggle::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #fff;
+      top: 4px;
+      left: 4px;
+      transition: transform 0.3s;
+    }
+
+    .toggle.on {
+      background-color: #66bb6a;
+    }
+
+    .toggle.on::before {
+      transform: translateX(26px);
+    }
