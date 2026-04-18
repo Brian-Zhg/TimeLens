@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "TimeLens",
+  "name": "LockedIn — Website blocker for productivity",
   "version": "1.0",
-  "description": "Extension to help you stay on task and keep track of what you're doing on your computer",
+  "description": "Extension that helps you block out unnecessary websites",
   "action": {
     "default_popup": "basic_toggle.html",
     "default_icon": "tiktok.png"
