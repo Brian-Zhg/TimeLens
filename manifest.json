@@ -11,8 +11,7 @@
     "activeTab",
     "tabs",
     "storage",
-    "scripting",
-    "alarms"
+    "scripting"
   ],
   "web_accessible_resources": [
     {
