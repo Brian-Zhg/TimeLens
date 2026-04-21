@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LockedIn — Website blocker for productivity",
   "version": "1.0",
-  "description": "Extension that helps you block out unnecessary websites",
+  "description": "Block distracting websites with a custom list, focus timer, and password-protected sessions.",
   "action": {
     "default_popup": "basic_toggle.html",
     "default_icon": "tiktok.png"
